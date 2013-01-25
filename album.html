@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <style>
+            body {
+                overflow: hidden;
+                background-color: black;
+                color: white;
+            }
+        </style>
+        <script src="Three.min.js"></script>
+        <script src="stats.min.js"></script>
+        <script>
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            var mouseX = 0;
+            var mouseY = 0;
+            var scene;
+            var camera;
+            var stats;
+            var renderer;
+            var group;
+            var particle = [];
+            var url = [
+                    'http://t2.baidu.com/it/u=2150538223,2127700832&fm=24&gp=0.jpg',
+                    'http://t3.baidu.com/it/u=142795994,1996417330&fm=24&gp=0.jpg',
+                    'http://t2.baidu.com/it/u=1982084051,1045668245&fm=24&gp=0.jpg',
+                    'http://t1.baidu.com/it/u=1727521039,3859806791&fm=24&gp=0.jpg',
+                    'http://t3.baidu.com/it/u=2448520404,1597185114&fm=24&gp=0.jpg',
+                    'http://t1.baidu.com/it/u=575573417,2421018184&fm=24&gp=0.jpg',
+                    'http://t3.baidu.com/it/u=2730298047,1503171658&fm=24&gp=0.jpg',
+                    //'http://t3.baidu.com/it/u=492168775,1982551871&fm=24&gp=0.jpg',
+                    //'http://t1.baidu.com/it/u=2232737286,3428187892&fm=24&gp=0.jpg',
+                    'http://t3.baidu.com/it/u=2346644131,1897731929&fm=24&gp=0.jpg'
+                ];
+
+            function onload() {
+                init();
+                animate();
+            }
+            
+            function program(i) {
+                var len = url.length;
+                if ( !len ) return;
+                
+                var src = url[i % len];
+                return function(context){
+                    var image = new Image();
+                    image.src = src;
+                    var imageWidth = 150;
+                    var imageHeight = 150 / image.width * image.height;
+                    context.rotate(Math.PI);
+                    context.drawImage(image, 50, 50, imageWidth, imageHeight);
+                }
+            }
+            
+            function addParticle() {
+                for ( var i = 0; i < 100 ; i ++ ) {
+                    particle[i] = new THREE.Particle(new THREE.ParticleCanvasMaterial({
+                        color : Math.random() * 0x808080 + 0x808080,
+                        program : program(i)
+                    }))
+                    particle[i].position.x = Math.random() * 2000 - 1000;
+                    particle[i].position.y = Math.random() * 2000 - 1000;
+                    particle[i].position.z = Math.random() * 2000 - 1000;
+                    particle[i].scale.x = particle[i].scale.y = Math.random() + 1;
+                    group.add(particle[i]);console.log(particle[i].position)
+                }
+            }
+            
+            function removeParticle() {
+                for ( var i = 0; i < 100 ; i ++ ) {
+                    group.remove(particle[i]);
+                }
+            }
+            function init() {
+                camera = new THREE.PerspectiveCamera(90, width / height, 5, 5000);
+                camera.position.z = 100;
+
+                scene = new THREE.Scene();
+                
+                group = new THREE.Object3D();
+                scene.add(group);
+                
+                
+                addParticle();
+                
+                document.onmousemove = mouseMove;
+                document.getElementById('btn').onclick = addPhoto;
+                
+                renderer = new THREE.CanvasRenderer();
+                renderer.setSize(width, height);
+                document.body.appendChild(renderer.domElement);
+                
+                stats = new Stats();
+                
+                stats.domElement.style.position = 'absolute';
+                stats.domElement.style.top = 0;
+                stats.domElement.style.right = 0;
+                document.body.appendChild(stats.domElement);
+            }
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                render();
+                stats.update();
+            }
+            
+            function mouseMove(e) {
+                mouseX = e.clientX - width / 2;
+                mouseY = e.clientY - height / 2;
+            } 
+            
+            function addPhoto() {
+                if (url[0] == 'http://t2.baidu.com/it/u=2150538223,2127700832&fm=24&gp=0.jpg'){
+                    url = [];
+                }
+                
+                url.push(document.getElementById('url').value);
+                removeParticle();
+                addParticle();
+            }
+            function render() {
+                camera.position.x += (mouseX - camera.position.x) * 0.01;
+                camera.position.y += (mouseY - camera.position.y) * 0.01;
+                camera.lookAt( scene.position );
+                
+                group.rotation.x += 0.001;
+                group.rotation.y += 0.001;
+                
+                renderer.render(scene, camera);
+            }
+        </script>
+    </head>
+
+    <body onload="onload()">
+<div>
+    <span>添加照片url</span>
+    <input type="url" id='url' style="width:600px"/>
+    <input type="button" id='btn' value='添加'/>
+</div>
+    </body>
+</html>
