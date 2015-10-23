@@ -38,11 +38,11 @@
                 init();
                 animate();
             }
-            
+
             function program(i) {
                 var len = url.length;
                 if ( !len ) return;
-                
+
                 var src = url[i % len];
                 return function(context){
                     var image = new Image();
@@ -53,7 +53,7 @@
                     context.drawImage(image, 50, 50, imageWidth, imageHeight);
                 }
             }
-            
+
             function addParticle() {
                 for ( var i = 0; i < 100 ; i ++ ) {
                     particle[i] = new THREE.Particle(new THREE.ParticleCanvasMaterial({
@@ -67,7 +67,7 @@
                     group.add(particle[i]);
                 }
             }
-            
+
             function removeParticle() {
                 for ( var i = 0; i < 100 ; i ++ ) {
                     group.remove(particle[i]);
@@ -78,45 +78,45 @@
                 camera.position.z = 100;
 
                 scene = new THREE.Scene();
-                
+
                 group = new THREE.Object3D();
                 scene.add(group);
-                
-                
+
+
                 addParticle();
-                
+
                 document.onmousemove = mouseMove;
                 document.getElementById('btn').onclick = addPhoto;
-                
+
                 renderer = new THREE.CanvasRenderer();
                 renderer.setSize(width, height);
                 document.body.appendChild(renderer.domElement);
-                
+
                 stats = new Stats();
-                
+
                 stats.domElement.style.position = 'absolute';
                 stats.domElement.style.top = 0;
                 stats.domElement.style.right = 0;
                 document.body.appendChild(stats.domElement);
             }
-            
+
             function animate() {
                 requestAnimationFrame(animate);
-                
+
                 render();
                 stats.update();
             }
-            
+
             function mouseMove(e) {
                 mouseX = e.clientX - width / 2;
                 mouseY = e.clientY - height / 2;
-            } 
-            
+            }
+
             function addPhoto() {
                 if (url[0] == 'http://t2.baidu.com/it/u=2150538223,2127700832&fm=24&gp=0.jpg'){
                     url = [];
                 }
-                
+
                 url.push(document.getElementById('url').value);
                 removeParticle();
                 addParticle();
@@ -125,10 +125,10 @@
                 camera.position.x += (mouseX - camera.position.x) * 0.01;
                 camera.position.y += (mouseY - camera.position.y) * 0.01;
                 camera.lookAt( scene.position );
-                
+
                 group.rotation.x += 0.001;
                 group.rotation.y += 0.001;
-                
+
                 renderer.render(scene, camera);
             }
         </script>
