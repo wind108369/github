@@ -1,0 +1,26 @@
+.setting {
+    padding: 20px;
+}
+
+.form-control {
+    display: inline-block;
+    margin: 0 50px 0 10px;
+    width: 300px;
+}
+
+#number {
+    width: 100px;
+}
+
+#start {
+    margin-right: 50px;
+}
+
+.red {
+    color: red;
+    font-size: 18px;
+}
+
+iframe {
+    width: 100%;
+}
