@@ -27,6 +27,12 @@
             }, 1000);
         }
 
+        setTimeout(function () {
+            if (iframe.length) {
+                iframe.remove();
+            }
+        }, 30 * 1000);
+
         setUrl(element);
         time ++;
 
