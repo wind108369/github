@@ -73,38 +73,43 @@
         <script>
             (function (){
                 var image = $().g('image');
+                image.onload = function () {
+                    draw();
+                }
+                draw();
+
+                function draw() {
+                    //图片处理
+                    $().canvas('canvas7').drawImage(image,0,0,400,400).imageAntiColor();
+
+                    $().canvas('canvas8').drawImage(image,0,0,400,400).imagePixelate();
+
+                    $().canvas('canvas9').drawImage(image,0,0,400,400).imagePixelParticle();
+
+                    $().canvas('canvas11').drawImage(image,0,0,400,400).imageGrey();
+
+                    $().canvas('canvas12').drawImage(image,0,0,400,400).imageFilterRed(function(x,y){
+                        return x + y <= 300;
+                    }).imageFilterGreen(function(x,y){
+                        return x + y > 300 && 0.1 * (x - 300)*(x - 300) > y -100;
+                    }).imageFilterBlue(function(x,y){
+                        return 0.1 * (x - 300)*(x - 300) <= y -100;
+                    });
+
+                    $().canvas('canvas13').drawImage(image,0,0,400,400).imageBlockRed(function(x,y){
+                        return x + y <= 300;
+                    }).imageBlockGreen(function(x,y){
+                        return x + y > 300 && x + y < 600;
+                    }).imageBlockBlue(function(x,y){
+                        return x + y >= 600;
+                    });
 
 
+                    $().canvas('canvas14').drawImage(image,0,0,400,400).imageTransparent(100,function(x,y){
+                        return (x-300)*(x-300) + (y-300)*(y-300) < 10000;
+                    });
+                }
 
-                //图片处理
-                $().canvas('canvas7').drawImage(image,0,0,400,400).imageAntiColor();
-
-                $().canvas('canvas8').drawImage(image,0,0,400,400).imagePixelate();
-
-                $().canvas('canvas9').drawImage(image,0,0,400,400).imagePixelParticle();
-
-                $().canvas('canvas11').drawImage(image,0,0,400,400).imageGrey();
-
-                $().canvas('canvas12').drawImage(image,0,0,400,400).imageFilterRed(function(x,y){
-                    return x + y <= 300;
-                }).imageFilterGreen(function(x,y){
-                    return x + y > 300 && 0.1 * (x - 300)*(x - 300) > y -100;
-                }).imageFilterBlue(function(x,y){
-                    return 0.1 * (x - 300)*(x - 300) <= y -100;
-                });
-
-                $().canvas('canvas13').drawImage(image,0,0,400,400).imageBlockRed(function(x,y){
-                    return x + y <= 300;
-                }).imageBlockGreen(function(x,y){
-                    return x + y > 300 && x + y < 600;
-                }).imageBlockBlue(function(x,y){
-                    return x + y >= 600;
-                });
-
-
-                $().canvas('canvas14').drawImage(image,0,0,400,400).imageTransparent(100,function(x,y){
-                    return (x-300)*(x-300) + (y-300)*(y-300) < 10000;
-                });
 
             })();
         </script>
