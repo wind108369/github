@@ -1,0 +1,216 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type='text/javascript' src='Expedition-min.js'></script>
+        <title>Untitled Document</title>
+
+        <style>
+            body {
+                font-size: 24px;
+                color:white;
+                cursor: pointer;
+                margin-left: -100px;
+            }
+            a {
+                color: blue;
+            }
+            .row{
+                margin:50px 50px 50px 150px;
+            }
+            .canvas{
+                float:left;
+            }
+            .code{
+                height:400px;
+                width: 550px;
+                margin-left:450px;
+                padding:30px;
+
+                -moz-box-shadow: 0px 5px 64px #ffffff;
+                -webkit-box-shadow: 0px 5px 64px #ffffff;
+                box-shadow: 0px 5px 64px #ffffff;
+
+                border:solid 5px #000000;
+                -moz-border-radius: 31px;
+                -webkit-border-radius: 31px;
+                border-radius: 31px;
+            }
+            .video{
+                margin-left:-100px;
+            }
+            .red {
+                color:green;
+            }
+            .line {
+                font-size: 50px;
+                min-height: 500px;
+                line-height: 100px;
+                padding: 0 200px;
+                margin: 100px 0;
+            }
+            p {
+                line-height: 50px;
+            }
+            .center {
+                text-align: center;
+                font-size: 100px;
+            }
+            .code-line {
+                line-height: 30px;
+                font-size: 25px;
+            }
+        </style>
+    </head>
+    <body bgcolor='black'>
+
+        <div class='row'><canvas id='canvas1' width=400 height=400 class='canvas'></canvas><div class='code'>
+            <pre>
+context.moveTo(50, 50);
+context.lineTo(200, 300);
+context.strokeStyle = 'white';
+context.stroke();
+            </pre>
+
+            </div></div>
+
+        <div class='row'><canvas id='canvas2' width=400 height=400 class='canvas'></canvas><div class='code'>
+            <pre>
+context.fillStyle = 'white';
+context.fillRect(0,150,100,100);
+
+context.strokeStyle = 'white';
+context.strokeRect(0,150,100,100);
+            </pre>
+        </div></div>
+
+        <div class='row'><canvas id='curve' width=400 height=400 class='canvas'></canvas><div class='code'>
+            <pre>
+context.moveTo(0, 0);
+context.bezierCurveTo(
+    0, 400, 400, 0, 400, 400);
+context.strokeStyle = 'white';
+context.stroke();
+            </pre>
+        </div></div>
+
+        <div class='row'><canvas id='canvas3' width=400 height=400 class='canvas'></canvas><div class='code'>
+            <pre style="font-size:20px">
+context.translate(100, 100);
+context.scale(2, 2);
+context.bezierCurveTo(0,-3,-5,-15,-25,-15);
+context.bezierCurveTo(-55,-15,-53,22.5,-53,15);
+context.bezierCurveTo(-55,40,-35,62,0,80);
+context.bezierCurveTo(35,62,55,40,53,15);
+context.bezierCurveTo(53,15,55,-15,25,-15);
+context.bezierCurveTo(10,-15,0,-3,0,0);
+context.fillStyle = ....
+context.fill();
+            </pre>
+        </div></div>
+
+        <div class='row'><canvas id='canvas4' width=400 height=400 class='canvas'></canvas><div class='code'>
+曲线的贝塞尔曲线的<a id="grow">运用</a>
+        </div></div>
+
+
+        <div class='row'><canvas id='canvas21' width=400 height=400 class='canvas'></canvas><div class='code'>
+            <pre>
+文字
+context.fillText
+context.strokeText
+可以设置文字的颜色、大小等</pre>
+        </div></div>
+
+        <div class='row'><canvas id='shadow' width=400 height=400 class='canvas'></canvas><div class='code'>
+            <script type="text/javascript">
+                var canvas = document.getElementById('shadow');
+                var context = canvas.getContext('2d');
+                context.shadowBlur = 10;
+                context.shadowColor = 'blue'
+                context.shadowOffsetX = 10;
+                context.shadowOffsetY = 0;
+                context.fillStyle = 'white';
+                context.fillRect(100, 100, 100, 100);
+            </script>
+            <pre>
+context.shadowBlur = 10;
+context.shadowColor = 'blue'
+context.shadowOffsetX = 10;
+context.shadowOffsetY = 0;
+            </pre>
+        </div></div>
+
+        <div class='row'><canvas id='gradient' width=400 height=400 class='canvas'></canvas><div class='code'>
+            <script type="text/javascript">
+                var canvas = document.getElementById('gradient');
+                var context = canvas.getContext('2d');
+                var gradient = context.createLinearGradient(100, 100, 200, 100);
+                gradient.addColorStop(0, 'rgba(0, 0, 255, 0.8)');
+                gradient.addColorStop(1, 'rgba(255, 255, 0, 0.5');
+                context.fillStyle = gradient;
+                context.fillRect(100, 100, 100, 50);
+
+                gradient = context.createRadialGradient(150, 250, 0, 150, 250, 100);
+                gradient.addColorStop(0, 'rgba(0, 0, 255, 0.8)');
+                gradient.addColorStop(1, 'rgba(255, 255, 0, 0.5');
+                context.fillStyle = gradient;
+                context.beginPath();
+                context.arc(150, 250, 100, 0, Math.PI * 2);
+                context.fill();
+            </script>
+            <pre>
+颜色渐变
+gradient = context.createLinearGradient
+context.createRadialGradient
+context.addColorStop
+context.fillStyle = gradient
+            </pre>
+        </div></div>
+
+
+        <script>
+            (function (){
+                var image = $().g('image');
+                $().canvas('canvas1').setStrokeStyle('white').line(50, 50, 200, 300);
+                $().canvas('canvas2').rect(0,150,100,100,{fillStyle:'white'})
+                .rect(200, 150, 100, 100, {strokeStyle: 'white'})
+                //.arc(200,200,50,0,Math.PI*2,true,{fillStyle:'white',shadowColor:'green',shadowOffsetX:20,shadowOffsetY:30});
+
+                $().canvas('curve')
+                .moveTo(0, 0).bezierCurveTo(0, 400, 400, 0, 400, 400).stroke({strokeStyle: 'white'});
+
+
+                $('a').canvas('canvas3')
+                .heart(150,150,50).createRadialGradient(100,100,100,300,300,400).addColorStop(0,'white').addColorStop(1,'red').heart(300,300,80,$('a').getGradient())
+                .click(function(){
+                    alert('click heart');
+                });
+
+                document.getElementById('grow').onclick = function() {
+                    $('flower').canvas('canvas4').clearRect(0,0,400,400).flower(50,50)
+                        .flower(150,50).flower(250,50,{isShapeSame:true})
+                        .flower(350,50,{isColorSame:false, speed: 10})
+                        .flower(50,150,{petalColor:'white'})
+                        .flower(150,150,{petalNum:6, speed: 25})
+                        .flower(250,150,{gap:1})
+                        .flower(350,150,{isShapeSame:true,gap:1})
+                        .flower(50,250,{shapevar1:3,shapevar2:2, speed: 50})
+                        .flower(150,250,{shapevar1:3,shapevar2:3,isShapeSame:true,petalColor:'#1eccc3',gap:1});
+                }
+
+
+
+                //文字
+                $().canvas('canvas21').click(function(){
+                    $('text').canvas('canvas21').setFillStyle('white')
+                    .clearRect(0,0,400,400).setFont(30)
+                    .write('大家好，我是文字'
+                    ,100,20,50,380,'fill',0,function(){
+                        $('text').setStrokeStyle('white').setFont(50)
+                        .strokeText('我是镂空的', 100, 200);
+                    })
+                });
+            })();
+        </script>
+    </body>
+</html>

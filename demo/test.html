@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<script type='text/javascript' src='Expedition.js'></script>
+
+		<title>Untitled Document</title>
+
+		<script type='text/javascript'>
+
+			function a(){
+				var image =$().g('gif');// new Image();
+				var image1 = $().g('image1');
+					//image.src = 'test.jpg';
+				//
+				var canvas = document.getElementById('canvas'),
+					aaa = function(){console.log('success')},
+					video = document.getElementById('video');
+
+				$().canvas('canvas',400,400).click(function(){
+
+					//$('flower').cancelMove();$('pa').stopBurn();
+					});//heart(75,40,10).heart(100,100);//draw('canvas');draw1('canvas');
+				//$('pa').setFont(100).fillText('汉字',100,100).rect(100,100,50,50).click(function(){$('flower').dispose()});
+
+				//$('lion').drawInside('pa',image1,0,0).burn(200,100,false);
+
+				$().expand('aaa',aaa);
+			//	$('bm').hypotrochoid(100,100,50,30,50).epitrochoid(200,200,50,30,50);
+			//	$('th').epicycloid(300,300,4);
+
+				//$('vs').customCurves(function(x){return (x - 200)*(x-200)},100,300);
+
+				//$('sun').arc(100,100,50,0,2*Math.PI,true);
+				$('moon').arc(200,200,50,3/4*Math.PI,7/4*Math.PI,false)
+				.arcTo(200-25*Math.sqrt(2),200-25*Math.sqrt(2),200-25*Math.sqrt(2),200+25*Math.sqrt(2),50*Math.sqrt(2)).fill();;
+
+				$('flower').flower(100,100).startQueue().hypMotion('move',{a:50,b:30,c:50,r:50,n:4,time:5050,rate:10,theta:30,delta: function(time){
+					return time > 2000?2:-2
+				}}).uniLinMotion('a',{x:1,y:1}).click(function(){
+					$('pa').draggable(false);
+				}).draggable();
+				//.click(function(){console.log('flower');});
+				//$('tb').drawOutside('pa',image,0,0);
+				//$('zues').ball(200,200,50,true).startQueue().epiMotion({a:50,b:30,c:50,time:2000}).uniLinMotion({x:1,y:1});
+				//$('a').ball(200,200,50,'y');
+				/*$('sf').rect(0,0,50,100,{fillStyle : $('sf').createRadialGradient(10,10,10,50,50,50)
+				.addColorStop(0,'rgba(50,50,100,1)').addColorStop(1,'rgba(100,200,30,1')
+				.getGradient()}).addEvent('click',aaa,{fireEvent:function(x,y){
+					return x>100;
+				}}).addEvent('onmouseup',function(){console.log(111);});*/
+				//$().backgroundVideo(video,0,0).closeBackgroundVideo();
+				//视频
+				//$('a').flower(100,100,{isColorSame: true,speed : 0}).drawVideo(video,0,0).videoFilterGreen(10,50,50,100,100).stopVideoFilterGreen();
+				//图片
+				//$('a').drawImage(image,0,0).imagePixelate(10,50,50,100,100);
+				console.log(Expedition.canvas);
+				//Expedition.fn.render.petal.init(0,0,{});console.log(Math.cos(2*Math.PI / 360 *60));
+				//$('sf').spiral(20,20,40,-24,0);
+				//$('sf').getGrid();
+				//console.log($.fn.isCanvasSupport());
+
+				/* setTimeout(function(){
+				 	saveCtx.drawImage(canvas, 0, 0);
+				 	window.open(saveCanvas.toDataURL('image/png'), 'FlowerPowerImage');
+				 },1000);
+				 */
+				/*
+				 * <video id="video" autoplay="true" loop="true">
+			<source src="test.mp4" type="video/mp4">
+			<source src="test.ogv" type="video/ogg">
+		</video>
+				 */
+			}
+		</script>
+	</head>
+	<body onload=a()>
+		<a  class='a' id='a'>sdfsdfsdf</a><img id='image' src='test.jpg' style='display:none'>
+		<img id='image1' src='纹理/叶.JPG' style='display:none'>
+		<img id='gif' src='gif.gif' style='display:none'>
+
+		<canvas id='canvas' width='400' height='300' ></canvas>
+	</body>
+</html>

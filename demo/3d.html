@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type='text/javascript' src='Expedition-min.js'></script>
+        <title>Untitled Document</title>
+
+        <style>
+            body {
+                font-size: 30px;
+                color:white;
+                cursor: pointer;
+            }
+            .container {
+                width: 900px;
+                margin: 0 auto;
+            }
+            .item {
+                width: 400px;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body bgcolor='black'>
+        <div class="container">
+            <div class="item">
+                <canvas id="ball" width=400 height=400></canvas>
+            </div>
+            <div class="item">
+                <canvas id="cube" width=400 height=400></canvas>
+            </div>
+        </div>
+
+
+
+
+        <script>
+            (function (){
+
+                $('ball').canvas('ball').setStrokeStyle('white')
+                    .ball(250,150,100, true);
+                $('cube').canvas('cube').setStrokeStyle('white')
+                    .cube(250,150,150,150,150,true);
+
+
+            })();
+        </script>
+    </body>
+</html>

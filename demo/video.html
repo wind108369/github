@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Untitled Document</title>
+		<script type='text/javascript' src='Expedition-min.js'></script>
+
+		<style>
+			.row{
+				margin:50px 50px 50px 150px;
+			}
+			.canvas{
+				float:left;
+			}
+			.code{
+				height:460px;
+				width: 400px;
+
+			}
+			.video{
+				margin-left:-100px;
+			}
+		</style>
+	</head>
+	<body bgcolor='black'>
+		<div class='row'>
+			<video id="video" autoplay="true" loop="true" class="video canvas" controls>
+			<source src="video/test.mp4" type="video/mp4">
+			<source src="video/test.ogv" type="video/ogg">
+			</video>
+			<div class='code'>视频处理
+			</div>
+		</div>
+
+		<div class='row'><canvas id='canvas1' width=768 height=432 class='canvas video'></canvas></div>
+		<script>
+			(function (){
+				var video = $().g('video');
+				$('video2').canvas('canvas1').drawVideo(video,0,0).videoPixelParticle();
+
+			})();
+		</script>
+	</body>
+</html>

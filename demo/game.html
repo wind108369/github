@@ -1,0 +1,571 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>life game</title>
+
+		<style>
+			body{
+				background-color:black;
+			}
+
+			#container{
+				background-color:white;
+				width:800px;
+				height:800px;
+				margin:10px auto;
+			}
+		</style>
+
+		<script type='text/javascript' src='Expedition.js'></script>
+
+		<script>
+			var roleData,
+				bt1,
+				bt2,
+				bt3,
+				w1,w2,
+				r1,
+				bgimg,
+				b = [],
+				g = [],
+				pc,
+				book,
+				loop,
+				heartLoop,
+				out,
+				timeFlag = 0,
+				video;
+
+			function init(){
+				var tempX,tempY,
+					left = document.getElementById('canvas').offsetLeft,
+					top = document.getElementById('canvas').offsetTop;
+
+				bgimg = $().g('bgimg');
+				bt1 = $().g('bt1');
+				bt2 = $().g('bt2');
+				bt3 = $().g('bt3');
+				w1 = $().g('w1');
+				w2 = $().g('w2');
+				r1 = $().g('r1');
+
+
+				b[0] = $().g('b1');
+				b[1] = $().g('b2');
+				b[2] = $().g('b3');
+				b[3] = $().g('b4');
+				b[4] = $().g('b5');
+
+				g[0] = $().g('g1');
+				g[1] = $().g('g2');
+				g[2] = $().g('g3');
+				g[3] = $().g('g4');
+
+				pc = $().g('pc');
+				book = $().g('book');
+				out = $().g('out');
+
+				video = $().g('video');
+
+				$('background').canvas('canvas').backgroundImage(bgimg,0,0);
+
+				//title
+				//$('showWord').save().setFont(100).strokeText('Life Game',50,100).restore().burn();
+
+				//创建角色的框
+				$('createRole').setFont(20).strokeText('请在方框中画出你要创建的角色',180,220).rect(300,300,200,200).mousedown(function(e){
+					tempX = Expedition.fn.event.getPageX(e) - left;
+	   				tempY = Expedition.fn.event.getPageY(e) - top;
+
+					var func = function(ev){
+						var x = Expedition.fn.event.getPageX(ev) - left,
+							y = Expedition.fn.event.getPageY(ev) - top;
+
+						if (x >= 300 && x <= 500 && y >= 300 && y <= 500) {
+							$('createRole').line(tempX, tempY, x, y);
+
+							tempX = x;
+							tempY = y;
+						}
+					}
+
+					Expedition.fn.on(document,'onmousemove',func);
+					Expedition.fn.on(document,'onmouseup',function(e) {
+						Expedition.fn.un(document,'onmousemove',func);
+					});
+				},{
+					fireEvent : function(x,y){
+						return x >= 300 && x <= 500 && y >= 300 && y <= 500;
+					}
+				});
+
+				//开始游戏按钮
+				$('button').drawImage(bt3,330,550).setFillStyle('white').setFont(20).setTextBaseline('top').fillText('开始游戏',360,560).click(function(){
+					beginGame();
+				},{
+					fireEvent : function(x,y){
+						return x >= 330 && x <= 450 && y >= 550 && y <= 600;
+					}
+				});
+			}
+
+			function clear(id){
+				return $(id).clearRect(0,0,800,800);
+			}
+
+			//开始游戏
+			function beginGame(){
+
+				//$('showWord').dispose();
+				$('button').dispose();
+
+				roleData = $('createRole').getImageData(301,301,198,198);
+				$('createRole').dispose();
+
+				//$('a').putImageData(roleData,0,0);
+				gaokao();
+			}
+
+			//跳动的角色
+			function jumpRole(id,x,y){
+				var time = 0,
+					func,
+					loop,
+					maxSpeed = 20,
+					flag = 0;
+
+				func = function(){
+
+					y -= delta(time);
+
+					if(typeof(x) == 'function'){
+						clear(id).putImageData(roleData,x(time),y);
+					}else{
+						clear(id).putImageData(roleData,x,y);
+					}
+					time += 25;
+				}
+
+				delta = function(t){
+					var t = t % 500,
+						value = - t / 12.5 + 20;
+
+					if (value > 0){
+						value -= 2;
+					}
+					return value;
+				}
+
+				loop = setInterval(func,25);
+				return loop;
+			}
+
+			//上一关回忆
+			function gaokao(){
+				var flag = 0;
+				var func = function(){
+					$('roshan').removeEvent('click',func);
+					$('bullet').drawImage(w2,280,390).uniLinMotion('a',{x:5,y:0,distance:200,
+						callback:function(){
+							$('bullet').dispose();
+
+							if (!flag) {
+								$('roshan').burn(200);
+							}
+							flag ++;
+							setTimeout(function(){
+								action1();
+							},5000);
+						}});
+				};
+
+				$('gaokaoRole').putImageData(roleData,100,300).drawImage(w1,130,400);
+
+				$('levelWord').setFont(30).strokeText('上一关回忆      高考',180,220);
+				$('roshan').setFont(50).strokeText('高考',500,550).drawImage(r1,450,300,200,200).click(func);
+			}
+
+			//打败高考之后
+			function action1(){
+				$('gaokaoRole').dispose();
+				$('roshan').dispose();
+
+				$('text').setFont(30)
+				.write('经过数十年的磨砺与挣扎之后，你终于战胜了高考大魔王，你告别父母，来到他乡，但是在战斗中你膝盖中了一枪，从此之后你就。。。'
+				,100,200,300,400,'stroke',0,action2);
+			}
+
+			function action2(){
+				setTimeout(function(){
+					clear('text');
+					clear('levelWord');
+					action3();
+				},1000);
+			}
+
+			function action3(){
+				$('text').write('这样了。。。',100,300,300,500,'stroke',0,function(){
+					setTimeout(function(){newHome();},5000)
+					});
+				loop = jumpRole('jumpRole',300,400);
+			}
+
+			//移动时的线
+			function moveLine(id,x,y){
+				clear(id).line(x,y,x,y+30).line(x+5,y+50,x+5,y+100).line(x+10,y,x+10,y+10)
+				.line(x+10,y+50,x+10,y+60).line(x+30,y+10,x+30,y+60).line(x+35,y+10,x+35,y+20).line(x+35,y+40,x+35,y+50)
+				.line(x+40,y+30,x+40,y+60);
+			}
+
+			function moveRole(id,x1,y1,x2,y2,time,type){
+				var index = 0,
+					tempX = x1,
+					tempY = y1,
+					deltaX = (x2 - x1)/ time /40,
+					deltaY = (y2 - y1) / time / 40;
+
+				function loop(){
+					if(type == 'g'){
+						$(id).clearRect(0, 0, 800, 800).drawImage(g[index % 4],tempX,tempY);
+					}else{
+						$(id).clearRect(0, 0, 800, 800).drawImage(b[index % 5],tempX,tempY);
+					}
+
+					tempX += deltaX;
+					tempY += deltaY;
+					index++;
+					if(tempX < x2){
+						setTimeout(loop,25);
+					}
+				}
+
+				setTimeout(loop,200);
+			}
+
+			function flyRole(id,x1,y1,x2,y2,callback){
+				setTimeout(function(){
+					clear(id).drawImage(b[2],x1,y1);
+					setTimeout(function(){
+						clear(id).drawImage(b[3],x1,y1);
+						setTimeout(function(){
+							moveLine(id,x1,y1);
+							setTimeout(function(){
+								moveLine(id,x2,y2);
+								setTimeout(function(){
+									clear(id).drawImage(b[2],x2,y2);
+									setTimeout(function(){
+										clear(id).drawImage(b[3],x2,y2);
+										if(typeof(callback) == 'function'){
+											callback();
+										}
+									},25)
+								},50)
+							},50);
+						},25);
+					},25)
+				},25);
+			}
+
+
+
+			function newHome(){
+
+				clear('text');
+				$('jumpRole').dispose();
+				clearInterval(loop);
+				clear('readBook');
+
+				timeFlag ++;
+				if(timeFlag == 4){
+					clear('text').setFont(30)
+					.write('四年时间过去了，马上就要毕业了，以此献给即将告别学校的同学们，老师们再见，同学们再见，游戏并没有结束，新的关卡将会到来，TO BE CONTINUE。。。。'
+					,100,200,300,400,'stroke',0);
+
+					var i = 0,
+						flowerLoop;
+
+					function flower(){
+						var x,y;
+
+						i++;
+
+						x = Math.floor(Math.random()*400 +200);
+						y = Math.floor(Math.random()*400 +200);
+
+						$('flower').flower(x,y);
+						if(i == 10){
+							clearInterval(flowerLoop);
+						}
+					}
+
+					flowerLoop = setInterval(flower,1000);
+				}else {
+					$('levelWord').strokeText('第XX关      大学',180,220);
+					$('qinshi').setFont(50).strokeText('寝室',300,280);
+					$('pc').drawImage(pc,100,300).click(playPC);
+					$('book').drawImage(book,500,300,120,160).click(openBook);
+					$('out').drawImage(out,350,300,40,80).click(action4);
+
+					$('role').putImageData(roleData,300,400);
+				}
+
+				if(timeFlag == 3){
+					flyRole('flyRole',0,1000,250,400,function(){
+						clear('text1').setFont(20).write('你昨天呼噜声太响，还我一夜没睡。。。',100,250,600,300,'fill',0,function(){
+							flyRole('flyRole',250,400,0,1000);
+							clear('text1');
+						})
+					})
+				}
+			}
+
+			function playPC(){
+				$('pc').hide().dispose();
+				$('book').hide().dispose();
+				$('out').hide().dispose();
+				clear('role');
+				clear('qinshi');
+
+				$('video').drawVideo(video,200,270,380,380).click(function(){
+					video.pause();
+					$('video').hide().dispose();
+
+					newHome();
+				});
+				video.play();
+			}
+
+			function openBook(){
+				$('pc').hide().dispose();
+				$('book').hide().dispose();
+				$('out').hide().dispose();
+				clear('role');
+				clear('qinshi');
+
+				var lx = 560,ly = 380,
+					angle = 0,
+					sx = 120,sy=160,
+					index = 0,
+					loop;
+				var func = function(){
+					index++;
+					lx -= 20;
+					ly -= 7;
+					angle += 40;
+					sx += 9;
+					sy += 12;
+					clear('openBook').save().translate(lx,ly).rotate(angle*Math.PI/180).drawImage(book,0 , 0 ,sx,sy).restore();
+					if(index == 18){
+						clearInterval(loop);
+					}
+				}
+				$('openBook').click(function(){
+					$('openBook').dispose();
+					read();
+				})
+				loop = setInterval(func,50);
+			}
+
+			function read(){
+
+				$('readBook').drawImage(book,500,300,120,160);
+				clear('text').write('武林秘籍还是要练的',100,250,300,500,'stroke',0,action17);
+				loop = jumpRole('jumpRole',300,400);
+
+				//sun();
+			}
+
+			function moon(){
+				$('sun').dispose();
+
+				$('night').rect(120,260,550,380,{
+					strokeStyle:'rgba(0,0,0,0.5)',
+					fillStyle:'rgba(0,0,0,0.5)'
+				});
+
+				$('moon').setIndex(10).arc(200,350,50,3/4*Math.PI,7/4*Math.PI,false,{strokeStyle:'yellow'})
+				.arcTo(200-25*Math.sqrt(2),350-25*Math.sqrt(2),200-25*Math.sqrt(2),350+25*Math.sqrt(2),50*Math.sqrt(2))
+				.setFillStyle('yellow').fill();
+
+				$('moon').addMove('moon',{
+					x : 5,
+					y : function(time,x,y){
+						return (x - 200)/500;
+					},
+					time : 2000,
+					callback : sun
+				})
+
+			}
+
+			function sun(){
+				clear('night');
+				$('moon').dispose();
+
+				$('sun').arc(200,350,50,0,2 * Math.PI,true,{
+					strokeStyle : 'red',
+					fillStyle : 'red'
+				}).addMove('sun',{
+					x : 5,
+					y : function(time,x,y){
+						return (x - 200)/500;
+					},
+					time : 2000,
+					callback : moon
+				})
+			}
+
+			function action4(){
+				$('pc').hide().dispose();
+				$('book').hide().dispose();
+				$('out').hide().dispose();
+				clear('role');
+				clear('qinshi');
+
+				clear('text').write('宅太久了，出去逛逛',100,250,300,500,'stroke',0,action5);
+				loop = jumpRole('jumpRole',300,400);
+			}
+
+			function action5(){
+				moveRole('role1',100,350,200,350,1);
+				$('text1').setFont(20).write('同学，走路怎么走成这样了？？？',100,120,550,150,'fill',0,action6);
+			}
+
+			function action6(){
+				$('text2').setFont(20).write('我躺着中了一枪',100,300,550,150,'fill',0,action7);
+			}
+
+			function action7(){
+				clear('text1').write('知道文艺青年是怎么走路的吗？？？',100,120,550,150,'fill',0,action8);
+			}
+
+			function action8(){
+				setTimeout(function(){
+					flyRole('flyRole',100,350,500,350,action9);
+				},2000)
+			}
+
+			function action9(){
+				setTimeout(function(){
+					clear('text2').write('哇。。。',100,300,550,150,'fill',0,action10);
+				},500);
+			}
+
+			function action10(){
+				clear('text1');
+				flyRole('role1',200,350,0,1000,action11);
+				flyRole('flyRole',500,350,0,1000);
+			}
+
+			function action11(){
+				setTimeout(function(){
+					clear('text2').write('哇哇。。。',100,300,550,150,'fill',0,action12);
+				},500);
+			}
+
+			function action12(){
+				moveRole('role1',100,350,200,350,1,'g');
+				$('role1').click(action13);
+				clear('text').write('宅太久了，看谁都美女',100,300,300,500,'stroke',0)
+
+			}
+
+			function heart(id,x,y){
+				var size = 0;
+				heartLoop = setInterval(function(){
+					size ++;
+					clear(id).heart(x,y,(size%2 + 1)*20);
+				},250);
+			}
+
+			function action13(){
+				$('role1').removeEvent('click',action13);
+				heart('heart',500,400);
+				clear('text2').write('妹子 能留个电话吗',100,300,550,150,'fill',0,action14);
+			}
+
+			function action14(){
+				$('text1').write('不用想，你肯定被画得很挫，我看还是算了吧',100,120,550,150,'fill',0,action15);
+			}
+
+			function action15(){
+				setTimeout(function(){
+					clear('role1');
+					moveLine('role1',200,350);
+					setTimeout(function(){
+						clear('role1');
+						clear('text1');
+						clear('text2').write('哇哇哇。。。。',100,300,550,150,'fill',0,action16);
+					},25);
+				},1000);
+			}
+
+			function action16(){
+				setTimeout(function(){
+					clear('text2');
+					clear('text');
+
+					//clearInterval(loop);
+					clearInterval(heartLoop);
+
+					//$('jumpRole').dispose();
+					$('heart').dispose();
+
+					newHome();
+				},3000);
+			}
+
+			function action17(){
+				flyRole('flyRole',100,350,300,350,action18);
+			}
+
+			function action18(){
+				clear('text1').setFont(20).write('作业明天就要交了，快点写，我还等着抄呢。。。。',100,120,550,150,'fill',0,action19);
+			}
+
+			function action19(){
+				setTimeout(function(){
+					clear('text1');
+					flyRole('flyRole',300,350,0,1000,function(){
+						setTimeout(newHome,3000);
+						}
+					);
+				},1000);
+			}
+		</script>
+	</head>
+	<body onload=init()>
+		<img id='bgimg' src='img/background.jpg' style='display:none;'/>
+		<img id='bt1' src='img/button1.png' style='display:none;'/>
+		<img id='bt2' src='img/button2.png' style='display:none;'/>
+		<img id='bt3' src='img/button3.png' style='display:none;'/>
+
+		<img id='w1' src='img/w1.png' style='display:none;'/>
+		<img id='w2' src='img/w2.png' style='display:none;'/>
+
+		<img id='r1' src='img/r1.png' style='display:none;'/>
+
+		<img id='b1' src='img/b1.png' style='display:none;'/>
+		<img id='b2' src='img/b2.png' style='display:none;'/>
+		<img id='b3' src='img/b3.png' style='display:none;'/>
+		<img id='b4' src='img/b4.png' style='display:none;'/>
+		<img id='b5' src='img/b5.png' style='display:none;'/>
+
+		<img id='g1' src='img/g1.png' style='display:none;'/>
+		<img id='g2' src='img/g2.png' style='display:none;'/>
+		<img id='g3' src='img/g3.png' style='display:none;'/>
+		<img id='g4' src='img/g4.png' style='display:none;'/>
+
+		<img id='pc' src='img/pc.png' style='display:none;'/>
+		<img id='book' src='img/book.jpg' style='display:none;'/>
+		<img id='out' src='img/out.png' style='display:none;'/>
+
+		<video id="video" loop="true" style='display:none;'>
+			<source src="video/test.mp4" type="video/mp4">
+			<source src="video/test.ogv" type="video/ogg">
+		</video>
+		<div id='container'>
+			<canvas id='canvas' width='800' height='800' ></canvas>
+		</div>
+	</body>
+</html>

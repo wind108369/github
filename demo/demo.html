@@ -1,0 +1,384 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<script type='text/javascript' src='Expedition.js'></script>
+		<title>Untitled Document</title>
+		<script>
+			function draw(){
+				var image = $().g('image');
+				$().canvas('canvas1').setStrokeStyle('white').line(50, 50, 200, 300);
+				$().canvas('canvas2').rect(0,150,100,100,{fillStyle:'white'}).arc(200,200,50,0,Math.PI*2,true,{fillStyle:'white',shadowColor:'green',shadowOffsetX:20,shadowOffsetY:30});
+				$('a').canvas('canvas3').heart(150,150,50).createRadialGradient(100,100,100,300,300,400).addColorStop(0,'white').addColorStop(1,'red').heart(300,300,80,$('a').getGradient())
+				.click(function(){
+					alert('click heart');
+				});
+				$('flower').canvas('canvas4').flower(50,50).flower(150,50).flower(250,50,{isShapeSame:true}).flower(350,50,{isColorSame:false})
+				.flower(50,150,{petalColor:'white'}).flower(150,150,{petalNum:6}).flower(250,150,{gap:1}).flower(350,150,{isShapeSame:true,gap:1})
+				.flower(50,250,{shapevar1:3,shapevar2:2}).flower(150,250,{shapevar1:3,shapevar2:3,isShapeSame:true,petalColor:'#1eccc3',gap:1});
+
+				$('ball1').canvas('canvas5').setStrokeStyle('white').ball(150,150,100);
+				$('ball2').setStrokeStyle('white').ball(350,150,50,true);
+
+				$('cube1').canvas('canvas6').setStrokeStyle('white').cube(150,150,100,150,200);
+				$('cube2').setStrokeStyle('white').cube(300,150,50,50,100,true);
+
+				//图片处理
+				$().canvas('canvas7').drawImage(image,0,0,400,400).imageAntiColor();
+
+				$().canvas('canvas8').drawImage(image,0,0,400,400).imagePixelate();
+
+				$().canvas('canvas9').drawImage(image,0,0,400,400).imagePixelParticle();
+
+				$().canvas('canvas10').drawImage(image,0,0,400,400).imageMosaics(10,100,100,100,100);
+
+				$().canvas('canvas11').drawImage(image,0,0,400,400).imageGrey();
+
+				$().canvas('canvas12').drawImage(image,0,0,400,400).imageFilterRed(function(x,y){
+					return x + y <= 300;
+				}).imageFilterGreen(function(x,y){
+					return x + y > 300 && 0.1 * (x - 300)*(x - 300) > y -100;
+				}).imageFilterBlue(function(x,y){
+					return 0.1 * (x - 300)*(x - 300) <= y -100;
+				});
+
+				$().canvas('canvas13').drawImage(image,0,0,400,400).imageBlockRed(function(x,y){
+					return x + y <= 300;
+				}).imageBlockGreen(function(x,y){
+					return x + y > 300 && x + y < 600;
+				}).imageBlockBlue(function(x,y){
+					return x + y >= 600;
+				});
+
+				$().canvas('canvas14').drawImage(image,0,0,400,400).imageTransparent(0,function(x,y){
+					return (x-300)*(x-300) + (y-300)*(y-300) < 10000;
+				});
+
+				//事件处理
+				$('event1').canvas('canvas15').rect(50,50,100,100,{fillStyle:'yellow'}).click(function(){
+					alert('点击方块');
+				});
+				$('event2').setFillStyle('white').arc(100,100,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				});
+				$('event3').rect(250,50,100,100,{fillStyle:'green'}).click(function(){
+					alert('点击方块');
+				});
+				$('event4').setFillStyle('white').arc(300,100,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				},{eventIndex : 1});
+
+				$('event5').rect(50,250,100,100,{fillStyle:'blue'}).click(function(){
+					alert('点击方块');
+				},{isEventTransparent:false});
+				$('event6').setFillStyle('white').arc(100,300,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				});
+
+				$('event7').rect(250,250,100,100,{fillStyle:'red'}).click(function(){
+					alert('点击方块');
+				},{isEventTransparent:false,eventIndex:1});
+				$('event8').setFillStyle('white').arc(300,300,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				});
+
+				//拖拽
+				$('draggable').canvas('canvas16').flower(100,100).draggable();
+				console.log(Expedition.canvas);
+
+				//运动
+				$('move1').canvas('canvas17').flower(100,100).click(function(){
+					$('move1').uniLinMotion({
+						x : 2,
+						y : 0,
+						time : 2000
+					})
+				})
+
+				//运动的合并
+				$('move2').canvas('canvas18').flower(100,100).click(function(){
+					$('move2').uniLinMotion({
+						x : 2,
+						y : 0,
+						time : 2000
+					}).uniLinMotion({
+						x : 0,
+						y : 2,
+						time : 2000
+					})
+				})
+
+				//队列
+				$('move3').canvas('canvas19').flower(100,100).click(function(){
+					$('move3').startQueue().uniLinMotion({
+						x : 2,
+						y : 0,
+						time : 2000
+					}).uniLinMotion({
+						x : 0,
+						y : 2,
+						time : 2000
+					})
+				})
+
+				//复杂运动
+				$('motion').canvas('canvas20').setStrokeStyle('white').hypotrochoid(100,100,50,30,50);
+				$('move4').flower(100,100).hypMotion('move',{
+					a:50,b:30,c:50,r:50,
+					n:4,rate:10,theta:30,delta:2
+				})
+
+				//文字
+				$().canvas('canvas21').click(function(){
+					$('text').setFillStyle('white')
+					.clearRect(0,0,400,400).setFont(30)
+					.write('大家好，逐字书写可以自己定义书写时间隔的速度，位置，最大宽度，填充类型，同时在书写结束之后，调用回调函数'
+					,100,20,50,380,'fill',0,function(){
+						$('text').flower(200,200);
+					})
+				});
+			}
+		</script>
+		<style>
+			.row{
+				margin:50px 50px 50px 150px;
+			}
+			.canvas{
+				float:left;
+			}
+			.code{
+				height:400px;
+				width: 400px;
+				margin-left:600px;
+				padding:20px;
+
+				-moz-box-shadow: 0px 5px 64px #ffffff;
+			    -webkit-box-shadow: 0px 5px 64px #ffffff;
+			    box-shadow: 0px 5px 64px #ffffff;
+
+				border:solid 5px #000000;
+			    -moz-border-radius: 31px;
+			    -webkit-border-radius: 31px;
+			    border-radius: 31px;
+
+				color:white;
+			}
+			.video{
+				margin-left:-100px;
+			}
+			.red {
+				color:green;
+			}
+		</style>
+	</head>
+	<body bgcolor='black' onload=draw()>
+		<div class='row'><canvas id='canvas1' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas1').setStrokeStyle('white')
+			.line(50, 50, 200, 300);
+			</div></div>
+
+		<div class='row'><canvas id='canvas2' width=400 height=400 class='canvas'></canvas><div class='code'>
+		$().canvas('canvas2').rect(0,150,100,100,{fillStyle:'white'})
+		.arc(200,200,50,0,Math.PI*2,true,
+		{fillStyle:'white',shadowColor:'green',
+		shadowOffsetX:20,shadowOffsetY:30});
+		</div></div>
+
+		<div class='row'><canvas id='canvas3' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('a').canvas('canvas3').heart(150,150,50)
+			.createRadialGradient(100,100,100,300,300,400)
+			.addColorStop(0,'white').addColorStop(1,'red')
+			.heart(300,300,80,$('a').getGradient()).
+			click(function(){
+					alert('click heart');
+				});
+		</div></div>
+
+		<div class='row'><canvas id='canvas4' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('').canvas('canvas4').flower(50,50)
+			.flower(150,50)
+			.flower(250,50,{isShapeSame:true})
+			.flower(350,50,{isColorSame:false})
+			.flower(50,150,{petalColor:'white'})
+			.flower(150,150,{petalNum:6})
+			.flower(250,150,{gap:1})
+			.flower(350,150,{isShapeSame:true,gap:1})
+			.flower(50,250,{shapevar1:3,shapevar2:2})
+			.flower(150,250,{shapevar1:3,shapevar2:3,
+			isShapeSame:true,petalColor:'#1eccc3'
+			,gap:1});
+		</div></div>
+
+		<div class='row'><canvas id='canvas5' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('ball1').canvas('canvas5')
+			.setStrokeStyle('white').ball(150,150,100);
+			$('ball2').setStrokeStyle('white')
+			.ball(350,150,50,true);
+		</div></div>
+
+		<div class='row'><canvas id='canvas6' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('cube1').canvas('canvas6')
+			.setStrokeStyle('white')
+			.cube(150,150,100,150,200);
+			$('cube2').setStrokeStyle('white')
+			.cube(300,150,50,50,100,true);
+		</div></div>
+
+		<div class='row'><img src='img/mm.jpg' id='image' width=400 height=400 style='float:left'/><div class='code'>图片处理</div></div>
+
+		<div class='row'><canvas id='canvas7' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas7')
+			.drawImage(image,0,0,400,400)
+			.imageAntiColor();
+		</div></div>
+
+		<div class='row'><canvas id='canvas8' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas8')
+			.drawImage(image,0,0,400,400)
+			.imagePixelate();
+		</div></div>
+
+		<div class='row'><canvas id='canvas9' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas9')
+			.drawImage(image,0,0,400,400)
+			.imagePixelParticle();
+		</div></div>
+
+		<div class='row'><canvas id='canvas10' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas10')
+			.drawImage(image,0,0,400,400)
+			.imageMosaics(10,100,100,100,100);
+		</div></div>
+
+		<div class='row'><canvas id='canvas11' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas11')
+			.drawImage(image,0,0,400,400)
+			.imageGrey();
+		</div></div>
+
+		<div class='row'><canvas id='canvas12' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas12')
+			.drawImage(image,0,0,400,400)
+			.imageFilterRed(function(x,y){<br>
+					return x + y <= 300;<br>
+				}).imageFilterGreen(function(x,y){<br>
+					return x + y > 300 && 0.1 * (x - 300)*(x - 300) > y -100;<br>
+				}).imageFilterBlue(function(x,y){<br>
+					return 0.1 * (x - 300)*(x - 300) <= y -100;<br>
+				});
+		</div></div>
+
+		<div class='row'><canvas id='canvas13' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas13').drawImage(image,0,0,400,400)
+			.imageBlockRed(function(x,y){
+					<br>return x + y <= 300;<br>
+				}).imageBlockGreen(function(x,y){
+					<br>return x + y > 300 && x + y < 600;<br>
+				}).imageBlockBlue(function(x,y){
+					<br>return x + y >= 600;<br>
+				});
+		</div></div>
+
+		<div class='row'><canvas id='canvas14' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas14').drawImage(image,0,0,400,400)
+			.imageTransparent(0,function(x,y){
+			<br>		return (x-300)*(x-300) + (y-300)*(y-300) < 10000;
+				<br>});
+		</div></div>
+
+		<div class='row'><canvas id='canvas15' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('event1').canvas('canvas15').rect(50,50,100,100,{fillStyle:'yellow'}).click(function(){
+					alert('点击方块');
+				});
+				$('event2').setFillStyle('white').arc(100,100,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				});
+				$('event3').rect(250,50,100,100,{fillStyle:'green'}).click(function(){
+					alert('点击方块');
+				});
+				$('event4').setFillStyle('white').arc(300,100,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				},{<strong class='red'>eventIndex : 1</strong>});
+
+				$('event5').rect(50,250,100,100,{fillStyle:'blue'}).click(function(){
+					alert('点击方块');
+				},{<strong class='red'>isEventTransparent:false</strong>});
+				$('event6').setFillStyle('white').arc(100,300,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				});
+
+				$('event7').rect(250,250,100,100,{fillStyle:'red'}).click(function(){
+					alert('点击方块');
+				},{<strong class='red'>isEventTransparent:false,eventIndex:1</strong>});
+				$('event8').setFillStyle('white').arc(300,300,75,0,Math.PI*2,true,{fillStyle:'white'}).click(function(){
+					alert('点击圆');
+				});
+		</div></div>
+
+		<div class='row'><canvas id='canvas16' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('draggable').canvas('canvas16')
+			.flower(100,100).draggable();
+		</div></div>
+
+		<div class='row'><canvas id='canvas17' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('move1').canvas('canvas17').flower(100,100)
+			.click(function(){
+					$('move1').uniLinMotion({
+						x : 2,
+						y : 0,
+						time : 2000
+					})
+				})
+		</div></div>
+
+		<div class='row'><canvas id='canvas18' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('move2').canvas('canvas18').flower(100,100)
+			.click(function(){
+					$('move2').uniLinMotion({
+						x : 2,
+						y : 0,
+						time : 2000
+					}).uniLinMotion({
+						x : 0,
+						y : 2,
+						time : 2000
+					})
+				})
+		</div></div>
+
+		<div class='row'><canvas id='canvas19' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$('move3').canvas('canvas19').flower(100,100)
+			.click(function(){
+					$('move3').startQueue().uniLinMotion({
+						x : 2,
+						y : 0,
+						time : 2000
+					}).uniLinMotion({
+						x : 0,
+						y : 2,
+						time : 2000
+					})
+				})
+		</div></div>
+
+		<div class='row'><canvas id='canvas20' width=400 height=400 class='canvas'></canvas><div class='code'>
+			内旋轮运动轨迹
+			$('motion').canvas('canvas20').setStrokeStyle('white')
+			.hypotrochoid(100,100,50,30,50);
+				$('move4').flower(100,100).hypMotion('move',{
+					a:50,b:30,c:50,r:50,
+					n:4,rate:10,theta:30,delta:2
+				})
+		</div></div>
+
+		<div class='row'><canvas id='canvas21' width=400 height=400 class='canvas'></canvas><div class='code'>
+			$().canvas('canvas21').click(function(){
+					$('text').setFillStyle('white')
+					.clearRect(0,0,400,400).setFont(30)
+					.write('大家好，逐字书写可以自己定义书写时间隔的速度，位置，最大宽度，填充类型，同时在书写结束之后，调用回调函数'
+					,100,20,50,380,'fill',0,function(){
+						$('text').flower(200,200);
+					})
+				});
+		</div></div>
+	</body>
+</html>

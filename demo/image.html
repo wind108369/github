@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type='text/javascript' src='Expedition-min.js'></script>
+        <title>Untitled Document</title>
+
+        <style>
+            body {
+                font-size: 30px;
+                color:white;
+            }
+
+            .item {
+                margin: 50px auto;
+                width: 400px;
+            }
+            p {
+                text-align: center;
+            }
+
+
+        </style>
+    </head>
+    <body bgcolor='black'>
+
+        <p>原图</p>
+        <p><img src='img/mm.jpg' id='image' width=400 height=400/></p>
+
+        <p>反色处理</p>
+        <div class='item'>
+            <canvas id='canvas7' width=400 height=400 class='canvas'></canvas>
+        </div>
+
+        <p>万恶的马赛克</p>
+        <div class='item'>
+            <canvas id='canvas8' width=400 height=400 class='canvas'></canvas>
+        </div>
+
+        <p>粒子化处理</p>
+        <div class='item'>
+            <canvas id='canvas9' width=400 height=400 class='canvas'></canvas>
+        </div>
+
+        <p>
+            灰度处理
+        </p>
+        <div class='item'>
+            <canvas id='canvas11' width=400 height=400 class='canvas'></canvas>
+        </div>
+
+        <p>
+            透镜
+        </p>
+        <div class='item'>
+            <canvas id='canvas12' width=400 height=400 class='canvas'></canvas>
+        </div>
+
+        <p>
+            滤镜
+        </p>
+        <div class='item'>
+            <canvas id='canvas13' width=400 height=400 class='canvas'></canvas>
+        </div>
+
+        <p>
+            透明度
+        </p>
+        <div class='item'>
+            <canvas id='canvas14' width=400 height=400 class='canvas'></canvas>
+        </div>
+
+
+        <script>
+            (function (){
+                var image = $().g('image');
+
+
+
+                //图片处理
+                $().canvas('canvas7').drawImage(image,0,0,400,400).imageAntiColor();
+
+                $().canvas('canvas8').drawImage(image,0,0,400,400).imagePixelate();
+
+                $().canvas('canvas9').drawImage(image,0,0,400,400).imagePixelParticle();
+
+                $().canvas('canvas11').drawImage(image,0,0,400,400).imageGrey();
+
+                $().canvas('canvas12').drawImage(image,0,0,400,400).imageFilterRed(function(x,y){
+                    return x + y <= 300;
+                }).imageFilterGreen(function(x,y){
+                    return x + y > 300 && 0.1 * (x - 300)*(x - 300) > y -100;
+                }).imageFilterBlue(function(x,y){
+                    return 0.1 * (x - 300)*(x - 300) <= y -100;
+                });
+
+                $().canvas('canvas13').drawImage(image,0,0,400,400).imageBlockRed(function(x,y){
+                    return x + y <= 300;
+                }).imageBlockGreen(function(x,y){
+                    return x + y > 300 && x + y < 600;
+                }).imageBlockBlue(function(x,y){
+                    return x + y >= 600;
+                });
+
+
+                $().canvas('canvas14').drawImage(image,0,0,400,400).imageTransparent(100,function(x,y){
+                    return (x-300)*(x-300) + (y-300)*(y-300) < 10000;
+                });
+
+            })();
+        </script>
+    </body>
+</html>
